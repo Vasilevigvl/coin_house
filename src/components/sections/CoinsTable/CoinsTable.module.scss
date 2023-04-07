@@ -8,9 +8,11 @@
   }
 
   &header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+    //display: flex;
+    //justify-content: space-between;
+    //align-items: center;
+    display: grid;
+    grid-template-columns: 16fr 25fr 25fr 25fr;
     text-align: right;
     padding: 12px 24px;
     width: 100%;
@@ -24,9 +26,11 @@
 }
 
 .coin {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+  //display: flex;
+  //justify-content: space-between;
+  //align-items: center;
+  display: grid;
+  grid-template-columns: 16fr 25fr 25fr 25fr;
   text-align: right;
   padding: 12px 24px;
   width: 100%;
@@ -35,7 +39,6 @@
   &_name {
     display: flex;
     align-items: center;
-    justify-content: center;
 
     & > img {
       max-width: 38px;
