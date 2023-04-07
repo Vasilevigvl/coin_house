@@ -1,0 +1,48 @@
+._ {
+  padding: 0 80px;
+
+  &wrap {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+  }
+
+  &header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    text-align: right;
+    padding: 12px 24px;
+    width: 100%;
+    background-color: greenyellow;
+    font-size: 24px;
+  }
+
+  &list {
+    margin-top: 12px;
+  }
+}
+
+.coin {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  text-align: right;
+  padding: 12px 24px;
+  width: 100%;
+  font-size: 20px;
+
+  &_name {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    & > img {
+      max-width: 38px;
+    }
+
+    & > span {
+      margin-left: 12px;
+    }
+  }
+}
