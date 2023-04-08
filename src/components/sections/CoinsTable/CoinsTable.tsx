@@ -65,7 +65,7 @@ const CoinsTable = () => {
                                         <span>{priceConverter(coin?.current_price) || 'No'}</span>
                                     </div>
                                     <div className={style.coin_change}>
-                                        <span>{coin?.market_cap_change_percentage_24h?.toFixed(2) || 0}%</span>
+                                        <span style={{color: coin?.market_cap_change_percentage_24h < 0 ? "red" : 'green'}}>{coin?.market_cap_change_percentage_24h?.toFixed(2) || 0}%</span>
                                     </div>
                                     <div className={style.coin_cap}>
                                         <span>{priceConverter(coin.market_cap)}</span>
