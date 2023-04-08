@@ -16,7 +16,6 @@ const MainPage = () => {
     }
 
     const topCoins = coinsArray?.slice(0, 5)
-    console.log(topCoins);
 
     useEffect(() => {
         marketAPI.coinsGet(currentPage)
