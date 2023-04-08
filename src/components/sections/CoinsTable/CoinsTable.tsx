@@ -1,17 +1,20 @@
-import React, {useEffect, useState} from 'react'
+import React from 'react'
 
-import style from './CoinsTable.module.scss'
-import {marketAPI} from "../../../api/coinsMarket";
-import {Coin} from "../../../types/coin";
+import style from './CoinsTable.module.scss';
 import {usePriceConvert} from "../../../hooks/usePriceConvert";
+import {Coin} from "../../../types/coin";
 
 const totalPages = 5;
 
-const CoinsTable = () => {
-    const [loading, setLoading] = useState<boolean>(false)
-    const [coinsArray, setCoinsArray] = useState<Coin[] | null>(null)
-    const [fetchError, setFetchError] = useState<string | null>(null)
-    const [currentPage, setCurrentPage] = useState<number>(1)
+interface CoinsTableProps {
+    currentPage: number;
+    setCurrentPage: (page: number) => void;
+    loading: boolean;
+    coinsArray: Coin[] | null;
+    fetchError: string | null
+}
+
+const CoinsTable = ({currentPage, setCurrentPage, coinsArray, loading, fetchError}: CoinsTableProps) => {
 
     const paginationButtons = [];
     for (let p = 1; p <= totalPages; p++) {
@@ -27,17 +30,6 @@ const CoinsTable = () => {
     }
 
     const { priceConverter } = usePriceConvert()
-
-    useEffect(() => {
-        marketAPI.coinsGet(currentPage)
-            .then((response) => {
-                setLoading(true)
-                if (response.status === 200) {
-                    setCoinsArray(response.data)
-                }})
-            .finally(() => setLoading(false))
-            .catch(err => setFetchError(err.message))
-    }, [currentPage])
 
     return (
         <div className={style._}>
