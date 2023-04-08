@@ -8,6 +8,7 @@ import {usePriceConvert} from "../../../hooks/usePriceConvert";
 const totalPages = 5;
 
 const CoinsTable = () => {
+    const [loading, setLoading] = useState<boolean>(false)
     const [coinsArray, setCoinsArray] = useState<Coin[] | null>(null)
     const [fetchError, setFetchError] = useState<string | null>(null)
     const [currentPage, setCurrentPage] = useState<number>(1)
@@ -28,14 +29,14 @@ const CoinsTable = () => {
     const { priceConverter } = usePriceConvert()
 
     useEffect(() => {
-        marketAPI.coinsGet(currentPage).then((response) => {
-            console.log(response);
-            if (response.status === 200) {
-                setCoinsArray(response.data)
-            } else {
-                setFetchError(response.statusText)
-            }
-        })
+        marketAPI.coinsGet(currentPage)
+            .then((response) => {
+                setLoading(true)
+                if (response.status === 200) {
+                    setCoinsArray(response.data)
+                }})
+            .finally(() => setLoading(false))
+            .catch(err => setFetchError(err.message))
     }, [currentPage])
 
     return (
@@ -50,6 +51,7 @@ const CoinsTable = () => {
                 </div>
                 <div className={style._list}>
                     {fetchError && <h4 style={{color: 'red'}}>{fetchError}</h4>}
+                    {loading && <div>fetching data...</div>}
                     {coinsArray &&
                         coinsArray.map((coin) => {
                             return (
@@ -73,7 +75,7 @@ const CoinsTable = () => {
                         })
                     }
                     <div className={style.paginate}>
-                        {paginationButtons}
+                        {coinsArray && paginationButtons}
                     </div>
                 </div>
             </div>
