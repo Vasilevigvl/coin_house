@@ -1,5 +1,5 @@
 export const usePriceConvert = () => {
-    const priceConverter = (price: number, count = 1, digits = 0) => {
+    const priceConverter = (price: number, count = 1, digits = 2) => {
         if (price === undefined) return '';
 
         const converted = (price * count);

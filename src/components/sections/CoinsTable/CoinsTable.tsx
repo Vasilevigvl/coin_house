@@ -5,26 +5,43 @@ import {marketAPI} from "../../../api/coinsMarket";
 import {Coin} from "../../../types/coin";
 import {usePriceConvert} from "../../../hooks/usePriceConvert";
 
-interface CoinsTable {
-
-}
+const totalPages = 5;
 
 const CoinsTable = () => {
     const [coinsArray, setCoinsArray] = useState<Coin[] | null>(null)
+    const [fetchError, setFetchError] = useState<string | null>(null)
+    const [currentPage, setCurrentPage] = useState<number>(1)
+
+    const paginationButtons = [];
+    for (let p = 1; p <= totalPages; p++) {
+        paginationButtons.push(
+            <div
+                key={p}
+                className={`${style.paginate_item} ${currentPage === p ? style.current : ""}`}
+                onClick={() => setCurrentPage(p)}
+            >
+                {p}
+            </div>
+        )
+    }
 
     const { priceConverter } = usePriceConvert()
 
     useEffect(() => {
-        marketAPI.coinsGet(1).then((response) => {
+        marketAPI.coinsGet(currentPage).then((response) => {
+            console.log(response);
             if (response.status === 200) {
                 setCoinsArray(response.data)
+            } else {
+                setFetchError(response.statusText)
             }
         })
-    }, [])
+    }, [currentPage])
 
     return (
         <div className={style._}>
             <div className={style._wrap}>
+                <h2>Markets rangs</h2>
                 <div className={style._header}>
                     <div>Coin name</div>
                     <div>Coin price</div>
@@ -32,6 +49,7 @@ const CoinsTable = () => {
                     <div>Coin market cap</div>
                 </div>
                 <div className={style._list}>
+                    {fetchError && <h4 style={{color: 'red'}}>{fetchError}</h4>}
                     {coinsArray &&
                         coinsArray.map((coin) => {
                             return (
@@ -42,10 +60,10 @@ const CoinsTable = () => {
                                         <span>{coin.name}</span>
                                     </div>
                                     <div className={style.coin_price}>
-                                        <span>{priceConverter(coin.current_price)}</span>
+                                        <span>{priceConverter(coin?.current_price) || 'No'}</span>
                                     </div>
                                     <div className={style.coin_change}>
-                                        <span>{coin.market_cap_change_percentage_24h.toFixed(2)}%</span>
+                                        <span>{coin?.market_cap_change_percentage_24h?.toFixed(2) || 0}%</span>
                                     </div>
                                     <div className={style.coin_cap}>
                                         <span>{priceConverter(coin.market_cap)}</span>
@@ -54,6 +72,9 @@ const CoinsTable = () => {
                             )
                         })
                     }
+                    <div className={style.paginate}>
+                        {paginationButtons}
+                    </div>
                 </div>
             </div>
         </div>
